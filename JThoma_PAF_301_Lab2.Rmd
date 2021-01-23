@@ -1,0 +1,122 @@
+---
+title: "Handout-Introduction to Data"
+subtitle: Jacob Thoma 
+output:
+  html_document: default
+  word_document: default
+---
+## On Your Own
+
+1.   Make a scatterplot of weight versus desired weight. Describe the 
+    relationship between these two variables.
+
+     ***Answer:*** It seems that as the actual weight increases, so does the desired
+     weight of the individual, indicating that most people are looking to only
+     gain or loose just a few punds, with far less people looking for drastic 
+     weight changes. There also appears to be several outliers.
+    
+```{r}
+source("http://www.openintro.org/stat/data/cdc.R")
+plot(x = cdc$wtdesire, y = cdc$weight, type = 'p', main = "Actual Weight vs. Desired Weight", 
+     xlab = 'Desired Weight', ylab = 'Actual Weight')
+```
+
+2.   Let's consider a new variable: the difference between desired weight 
+    (`wtdesire`) and current weight (`weight`). Create this new variable by 
+    subtracting the two columns in the data frame and assigning them to a new 
+    object called `wdiff`.
+    
+```{r}
+cdc$wdiff = cdc$wtdesire - cdc$weight
+```
+
+3.   What type of data is `wdiff`? If an observation `wdiff` is 0, what does 
+    this mean about the person's weight and desired weight. What if `wdiff` is 
+    positive or negative?
+
+     ***Answer:*** The 'wdiff' field contains numerical continuous data. If 'wdiff'
+     os 0 it means that the individual didn't want to loose or gain any weight 
+     (their actual and desired weight are the same). If 'wdiff' is positive it 
+     means the individual wanted to gain weight, and if it is negative then the 
+     individual wanted to loose weight.
+     
+4.   Describe the distribution of `wdiff` in terms of its center, shape, and 
+    spread, including any plots you use. What does this tell us about how people 
+    feel about their current weight?
+
+      ***Answer:***  
+      ***'wdiff' Data Summary:***  
+      Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  
+      -300.00  -21.00  -10.00  -14.59    0.00  500.00 
+      
+      Looking at the data summary alone we can see that the median is -10,
+      meaning that most poeple wanted to loose 10 pounds. Interestly enough we 
+      can also see that the 3rd Qu. is 0, meaning that more of the data fell below
+      0 than above. This translates to observing that more people wanted too loose
+      weight than gain it. The average amount of weight people wanted to change by 
+      was -14.59. 
+      From the histogram we can see the data is unimodal and skewed to the left, 
+      again indicating more poeple wanted to loose weight than to gain it. Because
+      of the unimodality we can also support the claim that a majority of people 
+      also only wanted to change their weight a little bit instead of drastic
+      changes. 
+    
+```{r}
+summary(cdc$wdiff)
+hist(cdc$wdiff, col = blues9, main = 'Desired Weight Change', 
+     xlab = 'Weight Change (lbs)' ) 
+```
+     
+5.   Using numerical summaries and a side-by-side box plot, determine if men tend
+    to view their weight differently than women.
+
+     ***Answer:***  
+     ***Male Weight Difference Data Summary:***  
+     Min. 1st Qu.  Median    Mean 3rd Qu.    Max.   
+    -300.00  -20.00   -5.00  -10.71    0.00  500.00   
+     ***Female Weight Difference Data Summary:***  
+     Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  
+    -300.00  -27.00  -10.00  -18.15    0.00   83.00  
+    Looking at the data summary we can see that the 1st quarters (low end) are much
+    lower with females than males. The same is true for the median and the mean. This
+    indicates that females typically want to loose more weight than males. However it is
+    worth noting that both male and female's 3rd quarter was at 0, following the larger
+    trend we observed that more people want to loose weight than gain it. 
+    When making the box plots, I excluded the possible outliers to make the data easier to
+    see. We can see the distance between the #rd and 1st qu. on the female box plot is 
+    greater than that of the male box plot, indicating that the amount of weight females
+    wanted to loose had more variance than males, who typically wanted to loose less weight. 
+
+    
+```{r}
+mdata <- subset(cdc, cdc$gender == 'm')
+fdata <- subset(cdc, cdc$gender == 'f')
+
+summary(mdata$wdiff)
+summary(fdata$wdiff)
+
+# Drew Box plot and excluded outliers to see data beter
+boxplot(cdc$wdiff ~ cdc$gender, outline=FALSE, 
+        main = 'Desired Weight Change: Male vs. Female', 
+        ylab = 'Weight Chnage', xlab = 'Gender')
+```
+     
+6.   Now it's time to get creative. Find the mean and standard deviation of 
+    `weight` and determine what proportion of the weights are within one 
+    standard deviation of the mean.
+
+     ***Answer:***  
+     70.76% off all the data fall within 1 standard deviation of the mean. This fits with what
+     we know about a perfect distrubution containing 68% of all data within 1 standard 
+     deviation of the mean. 
+    
+```{r}
+alldata <- cdc$weight
+total <- length(alldata)
+
+pm1std <- length(alldata[abs(alldata - mean(alldata)) < sd(alldata)])
+
+ans <- pm1std / total 
+
+ans*100
+```
