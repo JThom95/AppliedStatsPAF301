@@ -1,0 +1,101 @@
+---
+title: "Handout- Probability"
+subtitle: Jacob Thoma
+output:
+  html_document: default
+  #word_document: default
+---
+## On your own
+
+### Comparing Kobe Bryant to the Independent Shooter
+
+Using `calc_streak`, compute the streak lengths of `sim_basket`.
+
+1.   Describe the distribution of streak lengths. What is the typical streak 
+    length for this simulated independent shooter with a 45% shooting percentage?
+    How long is the player's longest streak of baskets in 133 shots?
+
+     ***Answer:*** The simulated player had a typical streak length of zero, meaning that 
+     their shots were not followed by a shot with a similar result (Hit or Miss). The
+     longer the streaks became the less there were. The players longest streak was 7.  
+     ***NOTE:*** When HMTL is knit and everything is re-run the numbers on the table do not typically match 
+     the answers I gave. 
+    
+```{r}
+# Load Data & calc_streak func
+download.file("http://www.openintro.org/stat/data/kobe.RData", destfile = "kobe.RData")
+load("kobe.RData")
+
+# Prepare data
+outcomes <- c("H", "M")
+sim_basket <- sample(outcomes, size = 133, replace = TRUE)
+
+# Calculate and examine simulated player streak 
+sim_streak <- calc_streak(sim_basket)
+barplot(table(sim_streak))
+```
+
+2.   If you were to run the simulation of the independent shooter a second time, 
+    how would you expect its streak distribution to compare to the distribution 
+    from the question above? Exactly the same? Somewhat similar? Totally 
+    different? Explain your reasoning.
+
+     ***Answer:***  
+     ***Before Run:*** I would expectthe distribution to be very simailar, at least in the patterns it 
+     revealed, but I would expect it to be slightly different perhaps with a shorter or longer 'longest 
+     streak' length.  
+     ***After Run:*** I was exactly right, the distribution is similar, but this time the longest streak
+     was 8!  
+     ***NOTE:*** When HMTL is knit and everything is re-run the numbers on the table do not typically match 
+     the answers I gave. 
+    
+```{r}
+# Load Data & calc_streak func
+download.file("http://www.openintro.org/stat/data/kobe.RData", destfile = "kobe.RData")
+load("kobe.RData")
+
+# Prepare data
+outcomes <- c("H", "M")
+sim_basket <- sample(outcomes, size = 133, replace = TRUE)
+
+# Calculate and examine simulated player streak 
+sim_streak <- calc_streak(sim_basket)
+barplot(table(sim_streak))
+```
+
+3.   How does Kobe Bryant's distribution of streak lengths compare to the 
+    distribution of streak lengths for the simulated shooter? Using this 
+    comparison, do you have evidence that the hot hand model fits Kobe's 
+    shooting patterns? Explain.
+    
+     ***Answer:*** Although I am dismayed to say it the distribution of Kobe's
+     shots and the simulated player's shots are very similar, pointing away from 
+     from the hot hand model for Kobe's shooting pattern. If Kobe's shot results 
+     were a result of a hot hands model we would expect to see more actual streak
+     lengths that were greater than 0. Additionaly we would likely expect the 
+     maxiumum streak length to be longer than that of the simulated player. 
+    
+```{r}
+# Load Data & calc_streak func
+download.file("http://www.openintro.org/stat/data/kobe.RData", destfile = "kobe.RData")
+load("kobe.RData")
+
+# Calculate and plot any Kobe streaks
+kobe_streak <- calc_streak(kobe$basket)
+barplot(table(kobe_streak))
+
+# Prepare sim data data
+outcomes <- c("H", "M")
+sim_basket <- sample(outcomes, size = 133, replace = TRUE)
+
+# Calculate and examine simulated player streak 
+sim_streak <- calc_streak(sim_basket)
+barplot(table(sim_streak))
+```    
+
+<div id="license">
+This is a product of OpenIntro that is released under a 
+[Creative Commons Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0). 
+This lab was adapted for OpenIntro by Andrew Bray and Mine &Ccedil;etinkaya-Rundel
+from a lab written by Mark Hansen of UCLA Statistics.
+</div>
