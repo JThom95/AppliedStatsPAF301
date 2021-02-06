@@ -1,0 +1,102 @@
+---
+title: "Handout- Sampling Distributions"
+subtitle: Jacob Thoma
+output:
+  html_document: default
+  #word_document: default
+---
+
+## On your own
+
+So far, we have only focused on estimating the mean living area in homes in 
+Ames.  Now you'll try to estimate the mean home price.
+
+1.   Take a random sample of size 50 from `price`. Using this sample, what is your best point estimate of the population mean?
+
+     ***Answer:  
+     Taking the mean of the sample is our best point estimate of the population mean, 
+     in this case it is 169,076.7***
+    
+```{r}
+download.file("http://www.openintro.org/stat/data/ames.RData", destfile = "ames.RData")
+load("ames.RData")
+
+area <- ames$Gr.Liv.Area
+price <- ames$SalePrice
+
+samp2 <- sample(price, 50)
+mean(samp2)
+```
+     
+2.   Since you have access to the population, simulate the sampling 
+    distribution for $\bar{x}_{price}$ by taking 5000 samples from the 
+    population of size 50 and computing 5000 sample means.  Store these means 
+    in a vector called `sample_means50`. Plot the data, then describe the 
+    shape of this sampling distribution. Based on this sampling distribution, 
+    what would you guess the mean home price of the population to be? Finally, 
+    calculate and report the population mean.
+
+     ***Answer:  
+     The histogram of the sample means is very symetrical. Based on the histogram alone 
+     I'd guess the mean population home proce would be very close to 180k.  
+     After calculating the actual population mean I got 180,796.1 which is very close to 
+     my estimate based off the samples.
+     ***
+    
+```{r}
+sample_means50 <- rep(NA, 5000)
+
+for(i in 1:5000){
+  samp <- sample(price, 50)
+  sample_means50[i] <- mean(samp)
+}
+
+hist(sample_means50, breaks = 25)
+
+mean(price)
+```
+     
+3.   Change your sample size from 50 to 150, then compute the sampling 
+    distribution using the same method as above, and store these means in a 
+    new vector called `sample_means150`. Describe the shape of this sampling 
+    distribution, and compare it to the sampling distribution for a sample 
+    size of 50.  Based on this sampling distribution, what would you guess to 
+    be the mean sale price of homes in Ames?
+
+     ***Answer:  
+     Again the sampling distribution is fairly symetrical but the peak appears to 
+     have moved higher than it was when we only had 50 samples. Based on this
+     data distribution I would predict the mean to be around 181k (which is 
+     closer to the known mean)***
+    
+```{r}
+sample_means150 <- rep(NA, 5000)
+
+for(i in 1:5000){
+  samp <- sample(price, 150)
+  sample_means150[i] <- mean(samp)
+}
+
+hist(sample_means150, breaks = 25)
+     
+```
+     
+4.   Of the sampling distributions from 2 and 3, which has a smaller spread?  If
+    we're concerned with making estimates that are more often close to the 
+    true value, would we prefer a distribution with a large or small spread?
+
+     ***Answer:  
+     The spread is smaller on the distribution where our sample was 150 which is
+     preferable when we are trying to hone in on making estimates closse to the 
+     true value. ***
+    
+```{r}
+
+     
+```
+     
+<div id="license">
+This is a product of OpenIntro that is released under a [Creative Commons 
+Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0).
+This lab was written for OpenIntro by Andrew Bray and Mine &Ccedil;etinkaya-Rundel.
+</div>
